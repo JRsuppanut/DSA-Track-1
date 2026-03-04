@@ -12,7 +12,7 @@ class Course:
         self.isActivate = True
 
     def __str__(self):
-        return f"{self.code:<10} | {self.name:<35} | {self.c_type:<5} | {self.credit:<8} | {self.semester:<3} | {self.lecturer}"
+        return f"{self.code:<10} | {self.name:<75} | {self.c_type:<5} | {self.credit:<8} | {self.semester:<3} | {self.lecturer}"
     __repr__ = __str__
 
 def loadCourse(filename):
@@ -34,7 +34,17 @@ def loadCourse(filename):
     
     return allCourse
 
+class RegisterSysyem:
+    def __init__(self , loaded_courses):
+        self.all_courses = loaded_courses
 
+
+    def print_all_course(self):
+        print(f"\n---------Show all courses {len(self.all_courses)} courses---------")
+        for course in self.all_courses:
+            print(course)
+        print("")
 myCourse = loadCourse('CprE_Subject.csv')
-print(f"length : {len(myCourse)}")
-print(*myCourse[:5], sep='\n')
+regis_system = RegisterSysyem(myCourse)
+
+regis_system.print_all_course()
