@@ -1,0 +1,6 @@
+# trash files and Python caches
+__pycache__/
+*.py[cod]
+
+# VScode setting
+.vscode/
