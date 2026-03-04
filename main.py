@@ -15,6 +15,18 @@ class Course:
         return f"{self.code:<10} | {self.name:<75} | {self.c_type:<5} | {self.credit:<8} | {self.semester:<3} | {self.lecturer}"
     __repr__ = __str__
 
+class RegisterSysyem:
+    def __init__(self , loaded_courses):
+        self.all_courses = loaded_courses
+
+
+    def print_all_course(self):
+        print(f"\n---------Show all courses {len(self.all_courses)} courses---------")
+        for course in self.all_courses:
+            print(course)
+        print("")
+
+
 def loadCourse(filename):
     allCourse = []
     with open(filename , mode='r', encoding='utf-8-sig' ) as file:
@@ -34,16 +46,7 @@ def loadCourse(filename):
     
     return allCourse
 
-class RegisterSysyem:
-    def __init__(self , loaded_courses):
-        self.all_courses = loaded_courses
 
-
-    def print_all_course(self):
-        print(f"\n---------Show all courses {len(self.all_courses)} courses---------")
-        for course in self.all_courses:
-            print(course)
-        print("")
 myCourse = loadCourse('CprE_Subject.csv')
 regis_system = RegisterSysyem(myCourse)
 
