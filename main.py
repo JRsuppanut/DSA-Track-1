@@ -15,7 +15,7 @@ class Course:
         return f"{self.code:<10} | {self.name:<75} | {self.c_type:<5} | {self.credit:<8} | {self.semester:<3} | {self.lecturer}"
     __repr__ = __str__
 
-class RegisterSystem:
+class RegisterSysyem:
     def __init__(self , loaded_courses):
         self.all_courses = loaded_courses
 
@@ -48,9 +48,9 @@ def loadCourse(filename):
 
 def main():
     myCourse = loadCourse('CprE_Subject.csv')
-    regis_system = RegisterSystem(myCourse)
+    regis_system = RegisterSysyem(myCourse)
 
+    #---------Loaded course------------
     regis_system.print_all_course()
 
 main()
-print("test")
