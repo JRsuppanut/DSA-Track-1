@@ -65,7 +65,7 @@ class RegisterSysyem:
         priority = 1 if selected_course.c_type == 'Sec' else 2
         heapq.heappush(self.priority_queue, (priority, selected_course.code, id(selected_course), selected_course))
         
-        print(f"✅ added : {selected_course.code} {selected_course.name} ({selected_course.c_type} - {selected_course.lecturer})\n")
+        print(f"✅ added : {selected_course.name} ( {selected_course.credit} ) to {selected_course.lecturer} ( {selected_course.c_type} ))")
     
     def undo(self):
         pass
