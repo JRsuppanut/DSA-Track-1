@@ -16,6 +16,7 @@ class Course:
         return f"{self.code:<10} | {self.name:<75} | {self.c_type:<5} | {self.credit:<8} | {self.semester:<3} | {self.lecturer}"
     __repr__ = __str__
 
+
 class RegisterSysyem:
     def __init__(self , loaded_courses):
         self.all_courses = loaded_courses
@@ -43,21 +44,21 @@ class RegisterSysyem:
         if len(available_section) == 1:
             selected_course = available_section[0]
         else:
-            print(f"    {course_code} {available_section[0].name} have many sections. Please select the section:")
+            print(f"{course_code} {available_section[0].name} have many sections. Please select the section:")
             i = 1
             for course in available_section:
-                print(f"type [{i}] to {course.lecturer:<3} - {course.c_type}")
+                print(f"     type [{i}] to {course.lecturer:<3} - {course.c_type}")
                 i += 1
 
             while True:
                 try:
-                    choice = int(input(f"select 1-{len(available_section)} : "))
+                    choice = int(input(f"     select 1-{len(available_section)} : "))
                     if 1 <= choice <= len(available_section):
                         selected_course = available_section[choice - 1]
                         break
-                    else:
+                    else: # case input is over length
                         print("❌ Invalid number, try again.")
-                except:
+                except: # case input is not number
                     print("❌ Please, Type a number")
 
         selected_course.isActivate = True
@@ -70,7 +71,7 @@ class RegisterSysyem:
         priority = 1 if selected_course.c_type == 'Sec' else 2
         heapq.heappush(self.priority_queue, (priority, selected_course.code, id(selected_course), selected_course))
         
-        print(f"✅ added : {selected_course.name} ( {selected_course.credit} ) to {selected_course.lecturer} ( {selected_course.c_type} ))")
+        print(f"\n✅ added : {selected_course.name} ( {selected_course.credit} ) to {selected_course.lecturer} ( {selected_course.c_type} )) \n")
     
     def undo(self):
         # Undo is possible only if we still have history
@@ -85,13 +86,33 @@ class RegisterSysyem:
         # We do NOT remove it from the heap because heapq does not support efficient removal.
         course.isActivate = False
 
-        print(f"REVERTED: {course.name} removed from {course.lecturer}.\n")
+        print(f"🔃 REVERTED: {course.name} removed from {course.lecturer}.\n")
 
     def process_all(self):
-        pass 
+        print("-----------✅ Register is Completed ✅-----------")
+        if not self.priority_queue:
+            print("not available course in queue \n") 
+            return
+
+        course_amount = 0
+        total_course_cradit = 0
+
+        while self.priority_queue:
+            priority, code, course_id, course = heapq.heappop(self.priority_queue)
+
+            if course.isActivate :
+                course_amount += 1
+                total_course_cradit += int(course.credit)
+
+                print(f"[{course.c_type:^5}] {course.code:<10} | {course.name:<45} | ผู้สอน: {course.lecturer}")
+        
+        print("-" * 75)
+        print(f"รวมจำนวนวิชาที่ลงทะเบียน: {course_amount} วิชา")
+        print(f"รวมหน่วยกิตทั้งหมด: {total_course_cradit} หน่วยกิต")
+        print("=========================================\n")
 
     def print_all_course(self):
-        print(f"\n---------Show all courses {len(self.all_courses)} courses---------")
+        print(f"\n-----------Show all courses {len(self.all_courses)} courses-----------")
         for course in self.all_courses:
             print(course)
         print("")
@@ -123,8 +144,12 @@ def main():
 
     #---------user process------------
     #test
+    print("-----------start Register-----------")
+    
+    
     regis_system.add_course('010123219')
-    # regis_system.add_course('010113139')
-    # regis_system.undo()
+    regis_system.add_course('010113139')
+    regis_system.undo()
+    regis_system.process_all()
 
 main()
