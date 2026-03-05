@@ -62,13 +62,29 @@ class RegisterSysyem:
 
         self.history_stack.append(selected_course)
 
+        # Keep only the last 3 actions (so undo works only for the last 3 adds)
+        if len(self.history_stack) > 3:
+            self.history_stack.pop(0)
+
         priority = 1 if selected_course.c_type == 'Sec' else 2
         heapq.heappush(self.priority_queue, (priority, selected_course.code, id(selected_course), selected_course))
         
         print(f"✅ added : {selected_course.code} {selected_course.name} ({selected_course.c_type} - {selected_course.lecturer})\n")
     
     def undo(self):
-        pass
+        # Undo is possible only if we still have history
+        if len(self.history_stack) == 0:
+            print("Nothing to undo.\n")
+            return
+
+        # Get the most recently added course (LIFO)
+        course = self.history_stack.pop()
+
+        # Mark it inactive (lazy delete).
+        # We do NOT remove it from the heap because heapq does not support efficient removal.
+        course.isActivate = False
+
+        print(f"REVERTED: {course.name} removed from {course.lecturer}.\n")
 
     def process_all(self):
         pass 
