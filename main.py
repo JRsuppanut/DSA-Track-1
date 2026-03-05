@@ -26,6 +26,15 @@ class RegisterSysyem:
             print(course)
         print("")
 
+    def add_courses(self):
+        pass
+    
+    def undo(self):
+        pass 
+
+    def process_all(self):
+        pass 
+
 
 def loadCourse(filename):
     allCourse = []
