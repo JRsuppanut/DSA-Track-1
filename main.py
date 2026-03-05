@@ -15,24 +15,6 @@ class Course:
         return f"{self.code:<10} | {self.name:<75} | {self.c_type:<5} | {self.credit:<8} | {self.semester:<3} | {self.lecturer}"
     __repr__ = __str__
 
-
-class Stack:
-    def __init__(self):
-        pass
-        
-        
-    def __str__(self):
-        pass
-        
-
-class PriorityQueue:
-    def __init__(self):
-        pass
-
-    def __str__(self):
-        pass
-
-
 class RegisterSysyem:
     def __init__(self , loaded_courses):
         self.all_courses = loaded_courses
@@ -48,7 +30,8 @@ class RegisterSysyem:
         pass
     
     def undo(self):
-        pass 
+        self.history = []
+        self.history.pop()   
 
     def process_all(self):
         pass 
