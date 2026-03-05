@@ -36,6 +36,7 @@ class RegisterSysyem:
             print(f"❌ not found {course_code} in system")
             return
         
+        selected_course.isActivate = True
         # a box contain all sections of this course  
         available_section = self.course_dict[course_code] 
 
@@ -123,6 +124,7 @@ def main():
     #---------user process------------
     #test
     regis_system.add_course('010123219')
-    regis_system.add_course('010113139')
+    # regis_system.add_course('010113139')
+    # regis_system.undo()
 
 main()
