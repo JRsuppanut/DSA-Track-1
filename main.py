@@ -46,8 +46,11 @@ def loadCourse(filename):
     
     return allCourse
 
+def main():
+    myCourse = loadCourse('CprE_Subject.csv')
+    regis_system = RegisterSysyem(myCourse)
 
-myCourse = loadCourse('CprE_Subject.csv')
-regis_system = RegisterSysyem(myCourse)
+    regis_system.print_all_course()
 
-regis_system.print_all_course()
+main()
+print("test")
