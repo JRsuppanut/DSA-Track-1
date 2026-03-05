@@ -19,30 +19,54 @@ class Course:
 class RegisterSysyem:
     def __init__(self , loaded_courses):
         self.all_courses = loaded_courses
+        # Create Dict for the course
+        self.course_dict =  {}
+        for i in loaded_courses:
+            if i.code not in self.course_dict:
+                self.course_dict[i.code] = []
+            self.course_dict[i.code].append(i)
 
-        self.course_dict =  {c.code: c for c in loaded_courses}
+        self.priority_queue = []
+        self.history_stack = []
 
 
-    def print_all_course(self):
-        print(f"\n---------Show all courses {len(self.all_courses)} courses---------")
-        for course in self.all_courses:
-            print(course)
-        print("")
 
     def add_course(self , course_code):
         # check if not found the course code
         if course_code not in self.course_dict:
             print(f"not found {course_code} in system")
             return
-        # 'to do' ActiveOn
+        
+        # a box contain all sections of this course  
+        available_section = self.course_dict[course_code] 
 
-        course = self.course_dict[course_code]
+        # Select section system
+        if len(available_section) == 1:
+            selected_course = available_section[0]
+        else:
+            print(f"\n {course_code} {available_section[0].name} have many sections. Please select the section:")
+            i = 1
+            for course in available_section:
+                print(f"type [{i}] to {course.lecturer:<10} {course.c_type:5} \n")
+                i += 1
 
-        # 'to do' push it on history
+            while True:
+                try:
+                    choice = int(input(f"select 1-{len(available_section)} : "))
+                    if 1 <= choice <= len(available_section):
+                        selected_course = available_section[choice - 1]
+                        break
+                    else:
+                        print("❌ Invalid number, try again.")
+                except:
+                    print("❌ Please, Type a number")
 
-        priority = 1 if course.c_type == 'Sec' else 2
-        heapq.heappush(self.priority_queue, (priority, course.code, course))
+        self.history_stack.append(selected_course)
 
+        priority = 1 if selected_course.c_type == 'Sec' else 2
+        heapq.heappush(self.priority_queue, (priority, selected_course.code, id(selected_course), selected_course))
+        
+        print(f"✅ added : {selected_course.code} {selected_course.name} ({selected_course.c_type} - {selected_course.lecturer})\n")
     
     def undo(self):
         pass
@@ -50,6 +74,11 @@ class RegisterSysyem:
     def process_all(self):
         pass 
 
+    def print_all_course(self):
+        print(f"\n---------Show all courses {len(self.all_courses)} courses---------")
+        for course in self.all_courses:
+            print(course)
+        print("")
 
 def loadCourse(filename):
     allCourse = []
@@ -71,10 +100,13 @@ def loadCourse(filename):
     return allCourse
 
 def main():
+    #---------system process-----------
     myCourse = loadCourse('CprE_Subject.csv')
     regis_system = RegisterSysyem(myCourse)
-
-    #---------Loaded course------------
     regis_system.print_all_course()
+
+    #---------user process------------
+    #test
+    regis_system.add_course('010123219')
 
 main()
