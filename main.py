@@ -30,11 +30,10 @@ class RegisterSysyem:
         self.history_stack = []
 
 
-
     def add_course(self , course_code):
         # check if not found the course code
         if course_code not in self.course_dict:
-            print(f"not found {course_code} in system")
+            print(f"❌ not found {course_code} in system")
             return
         
         # a box contain all sections of this course  
@@ -44,10 +43,10 @@ class RegisterSysyem:
         if len(available_section) == 1:
             selected_course = available_section[0]
         else:
-            print(f"\n {course_code} {available_section[0].name} have many sections. Please select the section:")
+            print(f"    {course_code} {available_section[0].name} have many sections. Please select the section:")
             i = 1
             for course in available_section:
-                print(f"type [{i}] to {course.lecturer:<10} {course.c_type:5} \n")
+                print(f"type [{i}] to {course.lecturer:<3} - {course.c_type}")
                 i += 1
 
             while True:
@@ -108,5 +107,6 @@ def main():
     #---------user process------------
     #test
     regis_system.add_course('010123219')
+    regis_system.add_course('010113139')
 
 main()
