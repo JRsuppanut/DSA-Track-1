@@ -36,7 +36,6 @@ class RegisterSysyem:
             print(f"❌ not found {course_code} in system")
             return
         
-        selected_course.isActivate = True
         # a box contain all sections of this course  
         available_section = self.course_dict[course_code] 
 
@@ -61,6 +60,7 @@ class RegisterSysyem:
                 except:
                     print("❌ Please, Type a number")
 
+        selected_course.isActivate = True
         self.history_stack.append(selected_course)
 
         # Keep only the last 3 actions (so undo works only for the last 3 adds)
