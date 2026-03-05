@@ -1,4 +1,5 @@
 import csv
+import heapq
 
 class Course:
     def __init__(self , code , name , c_type , credit  , semester , lecturer):
@@ -19,6 +20,8 @@ class RegisterSysyem:
     def __init__(self , loaded_courses):
         self.all_courses = loaded_courses
 
+        self.course_dict =  {c.code: c for c in loaded_courses}
+
 
     def print_all_course(self):
         print(f"\n---------Show all courses {len(self.all_courses)} courses---------")
@@ -26,8 +29,20 @@ class RegisterSysyem:
             print(course)
         print("")
 
-    def add_courses(self):
-        pass
+    def add_course(self , course_code):
+        # check if not found the course code
+        if course_code not in self.course_dict:
+            print(f"not found {course_code} in system")
+            return
+        # 'to do' ActiveOn
+
+        course = self.course_dict[course_code]
+
+        # 'to do' push it on history
+
+        priority = 1 if course.c_type == 'Sec' else 2
+        heapq.heappush(self.priority_queue, (priority, course.code, course))
+
     
     def undo(self):
         pass
