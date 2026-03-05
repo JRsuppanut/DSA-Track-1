@@ -30,8 +30,7 @@ class RegisterSysyem:
         pass
     
     def undo(self):
-        self.history = []
-        self.history.pop()   
+        pass
 
     def process_all(self):
         pass 
