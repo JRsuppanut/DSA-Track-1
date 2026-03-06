@@ -10,14 +10,14 @@ class Course:
         self.semester = semester
         self.lecturer = lecturer
 
-        self.isActivate = True
+        self.isActivate = False
 
     def __str__(self):
         return f"{self.code:<10} | {self.name:<75} | {self.c_type:<5} | {self.credit:<7} | {self.semester:<8} | {self.lecturer}"
     __repr__ = __str__
 
 
-class RegisterSysyem:
+class RegisterSystem:
     def __init__(self , loaded_courses):
         self.all_courses = loaded_courses
         # Create Dict for the course
@@ -40,6 +40,11 @@ class RegisterSysyem:
         # a box contain all sections of this course  
         available_section = self.course_dict[course_code] 
 
+        for i in available_section:
+            if i.isActivate :
+                print(f"⚠️ You have already registered for {course_code}\n")
+                return
+
         # Select section system
         if len(available_section) == 1:
             selected_course = available_section[0]
@@ -52,13 +57,13 @@ class RegisterSysyem:
 
             while True:
                 try:
-                    choice = int(input(f"     select 1-{len(available_section)} : "))
+                    choice = int(input(f"     select [1] - [{len(available_section)}] : "))
                     if 1 <= choice <= len(available_section):
                         selected_course = available_section[choice - 1]
                         break
                     else: # case input is over length
                         print("❌ Invalid number, try again.")
-                except: # case input is not number
+                except ValueError: # case input is not number
                     print("❌ Please, Type a number")
 
         selected_course.isActivate = True
@@ -71,7 +76,7 @@ class RegisterSysyem:
         priority = 1 if selected_course.c_type == 'Sec' else 2
         heapq.heappush(self.priority_queue, (priority, selected_course.code, id(selected_course), selected_course))
         
-        print(f"\n✅ added : {selected_course.name} ( {selected_course.credit} ) to {selected_course.lecturer} ( {selected_course.c_type} )) \n")
+        print(f"✅ added : {selected_course.name} ({selected_course.credit} credits) to {selected_course.lecturer} \n")
     
     def undo(self):
         # Undo is possible only if we still have history
@@ -93,27 +98,28 @@ class RegisterSysyem:
         if not self.priority_queue:
             print("not available course in queue \n") 
             return
+        #credits
 
         course_amount = 0
-        total_course_cradit = 0
+        total_course_credits = 0
 
         while self.priority_queue:
             priority, code, course_id, course = heapq.heappop(self.priority_queue)
 
             if course.isActivate :
                 course_amount += 1
-                total_course_cradit += int(course.credit)
-
-                print(f"[{course.c_type:^5}] {course.code:<10} | {course.name:<45} | ผู้สอน: {course.lecturer}")
+                total_course_credits += int(course.credit)
+                
+                print(f"[{course.c_type:^5}] {course.code:<10} | {course.name:<45} | Lecturer : {course.lecturer}")
         
-        print("-" * 75)
-        print(f"รวมจำนวนวิชาที่ลงทะเบียน: {course_amount} วิชา")
-        print(f"รวมหน่วยกิตทั้งหมด: {total_course_cradit} หน่วยกิต")
-        print("=========================================\n")
+        print("-------------------------------------------------------------------------------")
+        print(f"Total courses registered : {course_amount} courses")
+        print(f"Total credits : {total_course_credits} credits")
+        print("*======================================================*\n")
 
     def print_all_course(self):
         print(f"\n-----------Show all courses {len(self.all_courses)} courses-----------")
-        print(f"{"Code":<10} | {"Name":<75} | {"Type":<5} | {"Credits":<5} | {"Semester":<5} | {"Lecturer"}")
+        print(f"{'Code':<10} | {'Name':<75} | {'Type':<5} | {'Credits':<5} | {'Semester':<5} | {'Lecturer'}")
         for course in self.all_courses:
             print(course)
         print("")
@@ -140,17 +146,34 @@ def loadCourse(filename):
 def main():
     #---------system process-----------
     myCourse = loadCourse('CprE_Subject.csv')
-    regis_system = RegisterSysyem(myCourse)
+    regis_system = RegisterSystem(myCourse)
     regis_system.print_all_course()
 
     #---------user process------------
     #test
     print("-----------start Register-----------")
-    
-    
-    # regis_system.add_course('010123219')
-    # regis_system.add_course('010113139')
-    # regis_system.undo()
-    # regis_system.process_all()
+
+    while True:
+        try:
+            print("     Type [1] to add a course")
+            print("     Type [2] to undo")
+            print("     Type [3] to confirm")
+            print("     Type [4] to close program")
+            UserType = input("     select [1] - [4] : ").strip()
+            if UserType == '1':
+                input_code = input("add : ").strip()
+                regis_system.add_course(input_code)
+            elif UserType == '2':
+                regis_system.undo()
+            elif UserType == '3':
+                regis_system.process_all()
+                break
+            elif UserType == '4':
+                break
+            else:
+                print("❌ Invalid number, try again.")
+        except ValueError:
+            print("❌ Please, Type a number")
+        
 
 main()
