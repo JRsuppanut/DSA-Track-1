@@ -6,14 +6,14 @@ class Course:
         self.code = code
         self.name = name
         self.c_type = c_type
-        self.credit = credit
+        self.credit = credit[0]
         self.semester = semester
         self.lecturer = lecturer
 
         self.isActivate = True
 
     def __str__(self):
-        return f"{self.code:<10} | {self.name:<75} | {self.c_type:<5} | {self.credit:<8} | {self.semester:<3} | {self.lecturer}"
+        return f"{self.code:<10} | {self.name:<75} | {self.c_type:<5} | {self.credit:<7} | {self.semester:<8} | {self.lecturer}"
     __repr__ = __str__
 
 
@@ -113,6 +113,7 @@ class RegisterSysyem:
 
     def print_all_course(self):
         print(f"\n-----------Show all courses {len(self.all_courses)} courses-----------")
+        print(f"{"Code":<10} | {"Name":<75} | {"Type":<5} | {"Credits":<5} | {"Semester":<5} | {"Lecturer"}")
         for course in self.all_courses:
             print(course)
         print("")
@@ -147,9 +148,9 @@ def main():
     print("-----------start Register-----------")
     
     
-    regis_system.add_course('010123219')
-    regis_system.add_course('010113139')
-    regis_system.undo()
-    regis_system.process_all()
+    # regis_system.add_course('010123219')
+    # regis_system.add_course('010113139')
+    # regis_system.undo()
+    # regis_system.process_all()
 
 main()
