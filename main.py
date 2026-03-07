@@ -69,9 +69,6 @@ class RegisterSystem:
         selected_course.isActivate = True
         self.history_stack.append(selected_course)
 
-        # Keep only the last 3 actions (so undo works only for the last 3 adds)
-        if len(self.history_stack) > 3:
-            self.history_stack.pop(0)
 
         priority = 1 if selected_course.c_type == 'Sec' else 2
         heapq.heappush(self.priority_queue, (priority, selected_course.code, id(selected_course), selected_course))
