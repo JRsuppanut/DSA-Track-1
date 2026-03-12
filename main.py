@@ -151,26 +151,53 @@ def main():
     print("-----------start Register-----------")
 
     while True:
-        try:
-            print("     Type [1] to add a course")
-            print("     Type [2] to undo")
-            print("     Type [3] to confirm")
-            print("     Type [4] to close program")
-            UserType = input("     select [1] - [4] : ").strip()
-            if UserType == '1':
-                input_code = input("add : ").strip()
-                regis_system.add_course(input_code)
-            elif UserType == '2':
-                regis_system.undo()
-            elif UserType == '3':
-                regis_system.process_all()
-                break
-            elif UserType == '4':
-                break
-            else:
-                print("❌ Invalid number, try again.")
-        except ValueError:
-            print("❌ Please, Type a number")
+        user_input = input("\n >> ").strip().lower()
+
+        # case user Enter with no input
+        if not user_input:
+            continue
+        # get userinput first block to cammand
+        command = user_input[0]
+
+        if command == 'add':
+            pass
+
+        elif command == 'redo':
+            pass
+            
+        elif command == 'process_all':
+            pass
+
+        elif command == 'exit':
+            pass
+        
+        elif command == 'help':
+            pass
+
+        else:
+            "command not found, Type 'help' to..."
+            continue
+    # while True:   
+    #     try:
+    #         print("     Type [1] to add a course")
+    #         print("     Type [2] to undo")
+    #         print("     Type [3] to confirm")
+    #         print("     Type [4] to close program")
+    #         UserType = input("     select [1] - [4] : ").strip()
+    #         if UserType == '1':
+    #             input_code = input("add : ").strip()
+    #             regis_system.add_course(input_code)
+    #         elif UserType == '2':
+    #             regis_system.undo()
+    #         elif UserType == '3':
+    #             regis_system.process_all()
+    #             break
+    #         elif UserType == '4':
+    #             break
+    #         else:
+    #             print("❌ Invalid number, try again.")
+    #     except ValueError:
+    #         print("❌ Please, Type a number")
         
 
 main()
