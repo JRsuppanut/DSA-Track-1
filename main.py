@@ -34,37 +34,13 @@ class RegisterSystem:
     def add_course(self , course_code):
         # check if not found the course code
         if course_code not in self.course_dict:
-            print(f"❌ not found {course_code} in system")
+            print(f"❌ not found '{course_code}' in system")
             return
         
         # a box contain all sections of this course  
         available_section = self.course_dict[course_code] 
 
-        for i in available_section:
-            if i.isActivate :
-                print(f"⚠️ You have already registered for {course_code}\n")
-                return
-
-        # Select section system
-        if len(available_section) == 1:
-            selected_course = available_section[0]
-        else:
-            print(f"{course_code} {available_section[0].name} have many sections. Please select the section:")
-            i = 1
-            for course in available_section:
-                print(f"     type [{i}] to {course.lecturer:<3} - {course.c_type}")
-                i += 1
-
-            while True:
-                try:
-                    choice = int(input(f"     select [1] - [{len(available_section)}] : "))
-                    if 1 <= choice <= len(available_section):
-                        selected_course = available_section[choice - 1]
-                        break
-                    else: # case input is over length
-                        print("❌ Invalid number, try again.")
-                except ValueError: # case input is not number
-                    print("❌ Please, Type a number")
+        selected_course = available_section[0]
 
         selected_course.isActivate = True
         self.history_stack.append(selected_course)
@@ -73,12 +49,12 @@ class RegisterSystem:
         priority = 1 if selected_course.c_type == 'Sec' else 2
         heapq.heappush(self.priority_queue, (priority, selected_course.code, id(selected_course), selected_course))
         
-        print(f"✅ added : {selected_course.name} ({selected_course.credit} credits) to {selected_course.lecturer} \n")
+        print(f"✅ added : {selected_course.name} ({selected_course.credit} credits) to {selected_course.lecturer}")
     
     def undo(self):
         # Undo is possible only if we still have history
         if len(self.history_stack) == 0:
-            print("Nothing to undo.\n")
+            print("Nothing to undo.")
             return
 
         # Get the most recently added course (LIFO)
@@ -88,7 +64,7 @@ class RegisterSystem:
         # We do NOT remove it from the heap because heapq does not support efficient removal.
         course.isActivate = False
 
-        print(f"🔃 REVERTED: {course.name} removed from {course.lecturer}.\n")
+        print(f"🔃 REVERTED: {course.name} removed from {course.lecturer}.")
 
     def process_all(self):
         print("-----------✅ Register is Completed ✅-----------")
@@ -107,7 +83,8 @@ class RegisterSystem:
                 course_amount += 1
                 total_course_credits += int(course.credit)
                 
-                print(f"[{course.c_type:^5}] {course.code:<10} | {course.name:<45} | Lecturer : {course.lecturer}")
+                priority_type = 'Priority' if course.c_type == 'Sec' else 'Normal' 
+                print(f"[ {priority_type} ] {course.code} - {course.name:<45}")
         
         print("-------------------------------------------------------------------------------")
         print(f"Total courses registered : {course_amount} courses")
@@ -115,7 +92,7 @@ class RegisterSystem:
         print("*======================================================*\n")
 
     def print_all_course(self):
-        print(f"\n-----------Show all courses {len(self.all_courses)} courses-----------")
+        print(f"-----------Show all courses {len(self.all_courses)} courses-----------")
         print(f"{'Code':<10} | {'Name':<75} | {'Type':<5} | {'Credits':<5} | {'Semester':<5} | {'Lecturer'}")
         for course in self.all_courses:
             print(course)
@@ -157,47 +134,41 @@ def main():
         if not user_input:
             continue
         # get userinput first block to cammand
-        command = user_input[0]
-
-        if command == 'add':
-            pass
-
-        elif command == 'redo':
-            pass
+        parts = user_input.split()
+        command = parts[0]
             
+        if command == 'add':
+            try:
+                code = parts[1]
+            except IndexError:
+                print("❌ Please specify a course code")
+                continue
+
+            if not code.isdigit():
+                print("❌ Please, Type a number")
+                continue
+                
+            regis_system.add_course(code)
+
+        elif command == 'undo':
+            regis_system.undo()
+                
         elif command == 'process_all':
-            pass
+            regis_system.process_all()
+            break
 
         elif command == 'exit':
-            pass
-        
+            print("Exiting program...")
+            break
+
         elif command == 'help':
-            pass
+            print("     'add' ")
+            print("     'undo' ")
+            print("     'process_all' ")
+            print("     'exit' ")
 
         else:
-            "command not found, Type 'help' to..."
+            print(f"❌ '{user_input}' is not recognized ")
             continue
-    # while True:   
-    #     try:
-    #         print("     Type [1] to add a course")
-    #         print("     Type [2] to undo")
-    #         print("     Type [3] to confirm")
-    #         print("     Type [4] to close program")
-    #         UserType = input("     select [1] - [4] : ").strip()
-    #         if UserType == '1':
-    #             input_code = input("add : ").strip()
-    #             regis_system.add_course(input_code)
-    #         elif UserType == '2':
-    #             regis_system.undo()
-    #         elif UserType == '3':
-    #             regis_system.process_all()
-    #             break
-    #         elif UserType == '4':
-    #             break
-    #         else:
-    #             print("❌ Invalid number, try again.")
-    #     except ValueError:
-    #         print("❌ Please, Type a number")
-        
 
 main()
