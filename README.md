@@ -13,8 +13,6 @@
 ---
 
 ## How to Run
-
-### การเรียกใช้งาน
 1. ติดตั้ง **Python 3.x**
 2. เตรียมไฟล์ฐานข้อมูลรายวิชา `CprE_Subject.csv` วางอยู่ในโฟลเดอร์เดียวกับ `main.py` โดยมีโครงสร้างคอลัมน์: `Code, Name, Type, Credit, Semester, Lecturer`
 3. เปิด Terminal หรือ Command Prompt นำทางมาที่โฟลเดอร์โปรเจกต์ แล้วรันคำสั่ง:
