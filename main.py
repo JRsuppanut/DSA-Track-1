@@ -51,6 +51,7 @@ class RegisterSystem:
         
         print(f"✅ added : {selected_course.name} ({selected_course.credit} credits) to {selected_course.lecturer}")
     
+
     def undo(self):
         # Undo is possible only if we still have history
         if len(self.history_stack) == 0:
@@ -66,6 +67,7 @@ class RegisterSystem:
 
         print(f"🔃 REVERTED: {course.name} removed from {course.lecturer}.")
 
+
     def process_all(self):
         print("-----------✅ Register is Completed ✅-----------")
         if not self.priority_queue:
@@ -76,6 +78,7 @@ class RegisterSystem:
         course_amount = 0
         total_course_credits = 0
 
+        print_counter = 1
         while self.priority_queue:
             priority, code, course_id, course = heapq.heappop(self.priority_queue)
 
@@ -84,8 +87,9 @@ class RegisterSystem:
                 total_course_credits += int(course.credit)
                 
                 priority_type = 'Priority' if course.c_type == 'Sec' else 'Normal' 
-                print(f"[ {priority_type} ] {course.code} - {course.name:<45}")
-        
+                print(f"{print_counter}. [{priority_type}] {course.code} - {course.name:<45}")
+                print_counter += 1
+
         print("-------------------------------------------------------------------------------")
         print(f"Total courses registered : {course_amount} courses")
         print(f"Total credits : {total_course_credits} credits")
@@ -97,6 +101,7 @@ class RegisterSystem:
         for course in self.all_courses:
             print(course)
         print("")
+
 
 def loadCourse(filename):
     allCourse = []
@@ -153,20 +158,22 @@ def main():
         elif command == 'undo':
             regis_system.undo()
                 
-        elif command == 'process_all':
+        elif command == 'process_all' or command == 'confirm':
             regis_system.process_all()
             break
 
-        elif command == 'exit':
+        elif command == 'exit' or command == 'quit' or command == 'close':
             print("Exiting program...")
             break
 
         elif command == 'help':
-            print("     'add' ")
-            print("     'undo' ")
-            print("     'process_all' ")
-            print("     'exit' ")
-
+            print("\n📌 Available Commands:")
+            print(f" {'add <course_code>':<20} | Register a new course (e.g., add 010123219)")
+            print(f" {'undo':<20} | Revert the last added course")
+            print(f" {'process_all, confirm':<20} | Confirm registration and print receipt")
+            print(f" {'help':<20} | Show this help message")
+            print(f" {'exit, quit, close':<20} | Close the program")
+            
         else:
             print(f"❌ '{user_input}' is not recognized ")
             continue
