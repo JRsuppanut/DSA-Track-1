@@ -25,7 +25,7 @@ python main.py
 ## Available Commands
 1. **`add <CourseCode>`** : ค้นหาและเพิ่มรายวิชาลงในระบบ (ตัวอย่าง: `add 010123102`)
 ```
->> add <xxxxxxxxx>
+>> add XXXXXXXXX
 ```
 2. **`undo`** : ยกเลิกการเพิ่มรายวิชาล่าสุดที่เพิ่งทำรายการ
 ```
