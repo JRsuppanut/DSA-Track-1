@@ -36,14 +36,25 @@ class RegisterSystem:
         if course_code not in self.course_dict:
             print(f"❌ not found '{course_code}' in system")
             return
-        
+                
         # a box contain all sections of this course  
         available_section = self.course_dict[course_code] 
+
+        already_active = False
+        for course_obj in available_section:
+            if course_obj.isActivate:
+                already_active = True
+                break
+
+        if already_active:
+            print(f"❌ Course '{course_code}' is already active in the system.")
+            return
 
         selected_course = available_section[0]
 
         selected_course.isActivate = True
         self.history_stack.append(selected_course)
+
 
 
         priority = 1 if selected_course.c_type == 'Sec' else 2
